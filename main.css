@@ -1,0 +1,43 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #555;
+  margin: 0 0;
+  padding: 0 0;
+}
+#page_container {
+	position: relative;
+}
+#sudoku_container {
+	width: 600px;
+	height: 650px;
+	margin: 0 auto;	
+}
+#sudoku {
+	width: 600px;
+	border: 1px solid black;
+	height: 600px;
+}
+.box_9 {
+	float: left;	
+	width: 33.33%;
+	height: 33.33%;
+	border: 1px solid black;
+}
+.small_box {
+	float: left;
+	width: 33.33%;
+	height: 33.33%;
+	border: 1px solid #555;
+	text-align: center;
+	padding-top: 5px;
+	font-size: 50px;
+	cursor: pointer;
+}
+.selected {
+	background-color: #afeeee;
+}
