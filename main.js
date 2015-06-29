@@ -30,6 +30,8 @@ $(function() {
 		[4, 5, 6],
 		[7, 8, 9]
 	];
+
+	// array of unavailable numbers for a given position on the board
 	var unavailable_nums = [];
 
 	// select box to add/remove number to
