@@ -13,17 +13,31 @@ html {
 	position: relative;
 }
 #sudoku_container {
-	width: 600px;
+	width: 576px;
 	height: 650px;
 	margin: 0 auto;
 }
 #sudoku_container > h3 {
 	margin-bottom: 0px;
 }
+
+#difficulty {
+	margin-top: 15px;
+}
+#difficulty_drop_down {
+    font-size: inherit; 
+    padding: .5em; 
+    margin: 0;
+    background-color: #fff;
+    color: #444;
+}
+
+
 #sudoku {
-	width: 600px;
+	width: 576px;
 	border: 1px solid black;
-	height: 600px;
+	height: 576px;
+	display: none;
 }
 .box {
 	float: left;	
@@ -45,21 +59,42 @@ html {
 .selected {
 	background-color: #afeeee;
 }
-
-#auto_fill {
-	text-align: center;
-	width: 100%;
-	height: 30px;
-	border: 1px solid #555;
-	cursor: pointer;
-	padding-top: 5px;
-	margin-top: 7px;
-}
-#auto_fill:hover {
-	background-color: #555;
-	color: white;
-}
-
 .default_val {
 	color: black;
 }
+
+
+#hints_container {
+	display: none;
+	float: left;
+}
+.button {
+	width:100px;
+	text-align: center;
+	border: 1px solid #555;
+	cursor: pointer;
+	margin: 8px 0 0 0;
+	display: inline-block;
+}
+.active_button:hover {
+	color: black;
+}
+#hints_num {
+	font-weight: bold;
+}
+#restart_button {
+	display: none;
+	float: right;
+}
+
+.greyed_out {
+	color: #bbb;
+	border: 1px solid #bbb !important;
+	cursor: default !important;
+}
+.greyed_out:hover {
+	color: #bbb;	
+}
+
+
+
