@@ -1,11 +1,63 @@
 
 $(function() {
-
 	// **** Major bug ****
 	// randomly generating values to pre-populate board
 	// may create games which cannot be won.
 
 
+
+	$('#difficulty_drop_down').on('change', function(e) {
+		var difficulty = $(this).val();
+		$('#difficulty').hide();
+		$('#sudoku, #hints_container, #restart_button').fadeIn('slow');
+		$('#hints_container').css('display', 'inline-block');
+		switch (difficulty) {
+			case 'Easy':
+				difficulty_num = 24;
+				hints = 5;
+				break;
+			case 'Medium':
+				difficulty_num = 20;
+				hints = 3;
+				break;
+			case 'Hard':
+				difficulty_num = 16;
+				hints = 1;
+				break;
+			default:
+				difficulty_num = 16;
+				hints = 1;
+				break;
+		}
+		$('#hints_num').text(hints);
+		populate_board(difficulty_num);
+	});
+
+
+	$('#hint_button').on('click', function() {
+		console.log('use hint');
+		var $num = $('#hints_num').text();
+		if ($num >= 1) {
+			$num -= 1;
+			$('#hints_num').text( $num );
+			add_num_to_dom();
+			console.log($num);
+			if ($num === 0) {
+				$(this).addClass('greyed_out');
+				$(this).unbind('click');
+			}
+		} else {
+
+		}
+	});
+	$('#restart_button').on('click', function() {
+		$('#sudoku, #hints_container, #restart_button').hide();
+		$('.small_box').text('');
+		$('#difficulty').fadeIn('slow');
+		$('select').val('-');
+		$('#hint_button').removeClass('greyed_out').bind('click');
+
+	});
 
 	/* method to compare arrays
 	 * Usage:
@@ -113,13 +165,12 @@ $(function() {
 	// difficulty - to correspond to the number of starting numbers on the board
 	// ex: easy - 24, med - 16, hard - 8
 
-
-	var difficulty_num = 15;
-	$('#auto_fill').on('click', function() {
+	var difficulty_num;
+	function populate_board(difficulty_num) {
 		for (var i = 0; i < difficulty_num; i++) {
-			add_num_to_dom();
+			add_num_to_dom()
 		}
-	});
+	}
 	function add_num_to_dom() {
 		var rand_val = generate_vals();
 		var val = rand_val.value,
