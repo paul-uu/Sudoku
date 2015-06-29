@@ -11,6 +11,19 @@
 	<div id='page_container' >
 		<div id='sudoku_container'>
 			<h3>sudoku</h3>
+
+			<div id='difficulty'>
+				Difficulty:
+				<span id='drop_down_container'>
+					<select id='difficulty_drop_down'>
+						<option>-</option>
+						<option>Easy</option>
+						<option>Medium</option>
+						<option>Hard</option>
+					</select>
+				</span>
+			</div>
+
 			<div id='sudoku'>
 				<div class='box' id='box_1'>
 					<div class='small_box available' id='small_box_1'></div>
@@ -114,7 +127,12 @@
 					<div class='small_box available' id='small_box_81'></div>
 				</div>
 			</div>
-			<div id='auto_fill'>Auto-fill</div>
+
+			<div id='hints_container'>
+				<div id='hint_button' class='active_button button'>Use Hint</div>
+				 remaining:  <span id='hints_num'></span>
+			</div>
+			<div id='restart_button' class='button'>restart</div>
 		</div>
 
 	</div>
