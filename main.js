@@ -1,6 +1,12 @@
 
 $(function() {
 
+	// **** Major bug ****
+	// randomly generating values to pre-populate board
+	// may create games which cannot be won.
+
+
+
 	/* method to compare arrays
 	 * Usage:
 	 * [1, "2,3"].equals([1, 2, 3]) === false;
@@ -31,8 +37,16 @@ $(function() {
 		[7, 8, 9]
 	];
 
+
 	// array of unavailable numbers for a given position on the board
+	// considering row/col and numbers within the selected box
 	var unavailable_nums = [];
+	function get_unavailable_nums($box) {
+		var rows_and_cols = get_row_col($box);
+		var box_vals = get_box_vals($box);
+		return (rows_and_cols.rows).concat(rows_and_cols.cols, box_vals);
+	}
+
 
 	// select box to add/remove number to
 	$('.small_box').on('click', function() {
@@ -40,9 +54,9 @@ $(function() {
 		var $box = $(this);
 		$('.small_box').removeClass('selected');
 		$box.toggleClass('selected');
+
 		var rows_and_cols = get_row_col($box);
 		var box_vals = get_box_vals($box);
-
 		unavailable_nums = (rows_and_cols.rows).concat(rows_and_cols.cols, box_vals);
 
 	});
@@ -51,11 +65,9 @@ $(function() {
 	var key_values = { 49:1, 50:2, 51:3, 52:4, 53:5, 54:6, 55:7, 56:8, 57:9 };
 
 	// handles populating a box with a number, or removing a number
-	var $selected = $('.selected');
 	$(document).on('keypress', function(e) {
-
 		e.preventDefault();
-		if ( $selected.hasClass('default_val') ) {
+		if ( $('.selected').hasClass('default_val') ) {
 			return;
 		}
 		else if ($('.small_box').hasClass('selected')) {
@@ -66,11 +78,12 @@ $(function() {
 				if ( unavailable_nums.indexOf(key_val.toString()) >= 0 )
 					return;
 				else
-					$('.selected').text(key_val).addClass('occupied');
+					$('.selected').text(key_val).removeClass('available').addClass('occupied');
+					did_i_win();
 			} 
 			else if (key == 32) {
-				$selected.text('');
-				$selected.removeClass('occupied');
+				$('.selected').text('');
+				$('.selected').removeClass('occupied').addClass('available');
 			} 
 			else {
 				console.log('please enter 1-9');
@@ -81,6 +94,13 @@ $(function() {
 		}
 	});
 
+
+	// TO BE RE-IMPLEMENTED
+	function did_i_win() {
+		if ($('.small_box.unavailable').length == 81) {
+			alert('you won.');
+		}
+	}
 
 
 	// -----------------------------------------------------
@@ -94,31 +114,29 @@ $(function() {
 	// ex: easy - 24, med - 16, hard - 8
 
 
+	var difficulty_num = 15;
 	$('#auto_fill').on('click', function() {
-		console.log('ok');
+		for (var i = 0; i < difficulty_num; i++) {
+			add_num_to_dom();
+		}
 	});
-
-
-	function autopopulate(numberOfValues) {
-
-		for (var i = 0; i < numberOfValues.length; i++) {
-			var rand_val = generate_vals();
-			var val = rand_val.val,
-				$box = $('#small_box_' + rand_val.box);
-
-			if ($box.text()) {
-				// retry
+	function add_num_to_dom() {
+		var rand_val = generate_vals();
+		var val = rand_val.value,
+			$box = $('#small_box_' + rand_val.box);
+		if ($box.text()) {
+			add_num_to_dom();
+		} else {
+			var unavailable = get_unavailable_nums($box);
+			if ( unavailable.indexOf(val.toString()) >= 0 ) {
+				add_num_to_dom();
 			} else {
-				
-			}
-
-			if (valid_location(num, box)) {
-				place_number(small_box, num);
-			} else {
-				// re-try
+				//console.log('Value: ' + val + ' has not been found in unavailable values: ' + unavailable);
+				$box.text(val).removeClass('available').addClass('occupied').addClass('default_val');
 			}
 		}
 	}
+
 
 	function generate_vals() {
 		// random number and location
@@ -130,8 +148,6 @@ $(function() {
 
 	// checks if row/col arrays are in check
 	function validate($box, new_val) {
-
-		console.log('validating...');
 
 		var row_col_obj = get_row_col($box);
 		var row_array = row_col_obj.rows,
